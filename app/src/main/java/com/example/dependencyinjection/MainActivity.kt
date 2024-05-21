@@ -53,6 +53,7 @@ class MainActivity : ComponentActivity() {
 //        So, we need to go for field injection.
         component.inject(this)
         userRegistrationService.registerUser("abhi@gmail.com", "user registered")
+
     }
 }
 
