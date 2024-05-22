@@ -1,16 +1,23 @@
 package com.example.dependencyinjection.dependencyinjection
 
 import javax.inject.Inject
+import javax.inject.Named
 
-// by using Inject, Dagger able to know how to create the object of the class by using the constructor
-// notice, on creating the object of the UserRegistrationService, we also need the object of the UserRepository
-// and EmailService object. Therefore, we also need to annotate the Inject in EmailService and UserRepository class.
+//Suppose, In UserRegistrationService instead of EmailService, we want to pass MessageService
+//to make it loosely coupled we will make interface and make EmailService and MessageService implement
+//that interface. In the same way, if we want to pass the SQLRepository and FirebaseRepository in the
+// UserRepository, we implement the interface
+
+// By using the NotificationService Dagger will not be able to differentiate which object to
+// use either MessageService or EmailService. Similarly, Dagger will not be able to differentiate
+// which object to use. For that we need to use Modules, Provides and Binds
+
 class UserRegistrationService @Inject constructor(
-    private val userRepository: UserRepository,
-    private val emailService: EmailService
+    @SQLQualifier private val userRepository: UserRepository,
+     private val service: NotificationService
 ) {
     fun registerUser(email: String, password: String) {
         userRepository.saveUser(email, password)
-        emailService.send(email, "no-reply@gmail.com", "User Registered")
+        service.send(email, "no-reply@gmail.com", "User Registered")
     }
 }

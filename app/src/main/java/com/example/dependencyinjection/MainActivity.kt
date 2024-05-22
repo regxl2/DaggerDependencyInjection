@@ -36,24 +36,9 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
-//        Chapter1:- This is manual Dependency Injection
-//        val userRepository = UserRepository()
-//        val emailService = EmailService()
-//        val userRegistrationService = UserRegistrationService(userRepository, emailService)
-//        userRegistrationService.registerUser("abhi@gmail.com", "user registered")
-
-
-//        Chapter2:- Dagger will automatically implement the UserRegistrationComponent by creating DaggerUserRegistrationComponent
         val component = DaggerUserRegistrationComponent.builder().build()
-//        val userRegistrationService = component.getUserRegistrationService()
-//        userRegistrationService.registerUser("abhi@gmail.com", "user registered")
-
-//        Chapter3:- Suppose, this activity need 50 dependencies then, we always needs to 50 function calls.
-//        So, we need to go for field injection.
         component.inject(this)
         userRegistrationService.registerUser("abhi@gmail.com", "user registered")
-
     }
 }
 
