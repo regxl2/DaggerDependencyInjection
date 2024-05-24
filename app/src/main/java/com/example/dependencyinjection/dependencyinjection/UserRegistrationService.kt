@@ -13,7 +13,7 @@ import javax.inject.Named
 // which object to use. For that we need to use Modules, Provides and Binds
 
 class UserRegistrationService @Inject constructor(
-    @SQLQualifier private val userRepository: UserRepository,
+    @Named("firebase") private val userRepository: UserRepository,
      private val service: NotificationService
 ) {
     fun registerUser(email: String, password: String) {

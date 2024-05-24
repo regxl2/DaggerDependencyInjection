@@ -22,7 +22,7 @@ class EmailService @Inject constructor(): NotificationService{
 // Sometime, we don't have access to class in that case,
 // we have to add @Singleton annotation to the method in module which creates the object
 // of the class.
-@Singleton
+@ActivityScope
 class MessageService @Inject constructor(private val retryCount: Int): NotificationService{
     override fun send(sender: String, receiver: String, body: String) {
         Log.d(TAG, "Message is sent from $sender to $receiver and message is :- $body and retry count is $retryCount")

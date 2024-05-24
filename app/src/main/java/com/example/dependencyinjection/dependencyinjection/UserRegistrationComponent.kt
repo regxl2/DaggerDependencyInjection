@@ -10,14 +10,20 @@ import javax.inject.Singleton
 //with @Component. Dagger will create a Container as we would have done with manual dependency injection.
 //An interface annotated with @Component will make Dagger generate code with all the dependencies required
 //to satisfy the parameters of the methods it exposes.
-@Singleton
-@Component(modules = [UserRepositoryModule::class, NotificationServiceModule::class])
+
+
+// For each component use different scope otherwise it will create error.
+// Since, i used @Singleton annotation for AppComponent, then i cannot
+// use @Singleton annotation for the UserRegistrationComponent. For that
+// You have make custom annotation.
+@ActivityScope
+@Component(dependencies = [AppComponent::class], modules = [UserRepositoryModule::class, NotificationServiceModule::class])
 interface UserRegistrationComponent {
     fun inject(mainActivity: MainActivity)
 
     @Component.Factory
     interface Factory{
         // here, name of the create function could be anything but it is standard to have name create.
-        fun create(@BindsInstance retryCount: Int): UserRegistrationComponent
+        fun create(@BindsInstance retryCount: Int, appComponent: AppComponent): UserRegistrationComponent
     }
 }

@@ -20,8 +20,8 @@ class UserRepositoryModule {
 //     this code (the one inside the @Provides method) will be run.
     @Named("firebase")
     @Provides
-    fun getFirebaseRepository(): UserRepository{
-        return FirebaseRepository()
+    fun getFirebaseRepository(analyticsService: AnalyticsService): UserRepository{
+        return FirebaseRepository(analyticsService)
     }
 
 //    Bind annotation simulation using Provide annotation
