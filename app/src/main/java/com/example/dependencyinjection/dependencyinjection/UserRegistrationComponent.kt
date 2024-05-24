@@ -1,6 +1,7 @@
 package com.example.dependencyinjection.dependencyinjection
 
 import com.example.dependencyinjection.MainActivity
+import dagger.BindsInstance
 import dagger.Component
 
 //We want Dagger to create the graph of dependencies of our project, manage them for us and be able
@@ -12,4 +13,10 @@ import dagger.Component
 @Component(modules = [UserRepositoryModule::class, NotificationServiceModule::class])
 interface UserRegistrationComponent {
     fun inject(mainActivity: MainActivity)
+
+    @Component.Factory
+    interface Factory{
+        // here, name of the create function could be anything but it is standard to have name create.
+        fun create(@BindsInstance retryCount: Int): UserRegistrationComponent
+    }
 }

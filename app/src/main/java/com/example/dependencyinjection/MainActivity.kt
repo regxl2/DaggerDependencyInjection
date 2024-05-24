@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.dependencyinjection.dependencyinjection.DaggerUserRegistrationComponent
+import com.example.dependencyinjection.dependencyinjection.NotificationServiceModule
 import com.example.dependencyinjection.dependencyinjection.UserRegistrationService
 import com.example.dependencyinjection.ui.theme.DependencyInjectionTheme
 import javax.inject.Inject
@@ -36,7 +37,16 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        val component = DaggerUserRegistrationComponent.builder().build()
+        // method1:- by passing the values in the constructor of the notification module.
+        // There is one con of this approach is that if developer forget to call the
+        // notificationService module in the component. This could be avoided by using Factories approach.
+//        val component = DaggerUserRegistrationComponent.builder().notificationServiceModule(
+//            NotificationServiceModule(3)
+//        ).build()
+
+        //method2:- by using component.factory and bindsInstance, in constructor we can only pass the value
+        // of only one instance of a type not more than that otherwise it will give error.
+        val component = DaggerUserRegistrationComponent.factory().create(3)
         component.inject(this)
         userRegistrationService.registerUser("abhi@gmail.com", "user registered")
     }
