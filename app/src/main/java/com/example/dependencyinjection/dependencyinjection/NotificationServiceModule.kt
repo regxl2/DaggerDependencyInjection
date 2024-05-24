@@ -2,6 +2,7 @@ package com.example.dependencyinjection.dependencyinjection
 
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 
 //sometimes, we need the values at the runtime. for example, for creating room database instance, we need applicationContext
@@ -30,7 +31,6 @@ class NotificationServiceModule(){
     // this code (the one inside the @Provides method) will be run.
     // by using @Provides we don't need to apply @Inject annotation in the construction
     // of the class while in @Binds annotation we need to apply inject annotation.
-
 
     @Provides
     fun getMessageService(retryCount: Int): NotificationService{
