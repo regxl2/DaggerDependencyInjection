@@ -11,9 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.dependencyinjection.dependencyinjection.DaggerUserRegistrationComponent
-import com.example.dependencyinjection.dependencyinjection.MessageService
-import com.example.dependencyinjection.dependencyinjection.UserRegistrationComponent
 import com.example.dependencyinjection.dependencyinjection.UserRegistrationService
 import com.example.dependencyinjection.ui.theme.DependencyInjectionTheme
 import javax.inject.Inject
@@ -41,7 +38,7 @@ class MainActivity : ComponentActivity() {
         // By initializing the component at the application. We made the singleton
         // scope at the application level.
         val appComponent = (application as MyApplication).appComponent
-        val userRegistrationComponent = DaggerUserRegistrationComponent.factory().create(3, appComponent)
+        val userRegistrationComponent = appComponent.getUserRegistrationComponentFactory().create(3)
         userRegistrationComponent.inject(this)
         userRegistrationService.registerUser("abhi@gmail.com", "user registered")
     }

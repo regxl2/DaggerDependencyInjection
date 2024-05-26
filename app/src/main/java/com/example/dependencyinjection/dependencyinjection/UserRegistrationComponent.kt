@@ -3,6 +3,7 @@ package com.example.dependencyinjection.dependencyinjection
 import com.example.dependencyinjection.MainActivity
 import dagger.BindsInstance
 import dagger.Component
+import dagger.Subcomponent
 import javax.inject.Singleton
 
 //We want Dagger to create the graph of dependencies of our project, manage them for us and be able
@@ -17,13 +18,13 @@ import javax.inject.Singleton
 // use @Singleton annotation for the UserRegistrationComponent. For that
 // You have make custom annotation.
 @ActivityScope
-@Component(dependencies = [AppComponent::class], modules = [UserRepositoryModule::class, NotificationServiceModule::class])
+@Subcomponent(modules = [UserRepositoryModule::class, NotificationServiceModule::class])
 interface UserRegistrationComponent {
     fun inject(mainActivity: MainActivity)
 
-    @Component.Factory
+    @Subcomponent.Factory
     interface Factory{
         // here, name of the create function could be anything but it is standard to have name create.
-        fun create(@BindsInstance retryCount: Int, appComponent: AppComponent): UserRegistrationComponent
+        fun create(@BindsInstance retryCount: Int): UserRegistrationComponent
     }
 }
