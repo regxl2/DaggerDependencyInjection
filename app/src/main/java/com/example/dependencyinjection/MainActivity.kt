@@ -1,61 +1,64 @@
 package com.example.dependencyinjection
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.dependencyinjection.dependencyinjection.UserRegistrationService
+import androidx.lifecycle.ViewModelProvider
 import com.example.dependencyinjection.ui.theme.DependencyInjectionTheme
+import com.example.dependencyinjection.viewmodels.MainViewModel
+import com.example.dependencyinjection.viewmodels.MainViewModelFactory
+import com.example.dependencyinjection.viewmodels.ProductUiState
 import javax.inject.Inject
 
 const val TAG = "DependencyInjection"
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 
 class MainActivity : ComponentActivity() {
-    //    Inject annotation tells Dagger to inject the UserRegistrationService object in the field
-    @Inject
-    lateinit var userRegistrationService: UserRegistrationService
+    private lateinit var viewModel: MainViewModel
 
+    @Inject
+    lateinit var mainViewModelFactory: MainViewModelFactory
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val applicationComponent = (application as MyApplication).applicationComponent
+        applicationComponent.inject(this)
+        viewModel = ViewModelProvider(this, mainViewModelFactory).get(MainViewModel::class.java)
         setContent {
             DependencyInjectionTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Scaffold(modifier = Modifier.fillMaxSize()) {
+                    when (val productUiState = viewModel.productUiState.value){
+                        is ProductUiState.Loading -> Greeting(name = "Loading...", modifier = Modifier.padding(it))
+                        is ProductUiState.Success -> Greeting(name = productUiState.productList.toString(),modifier = Modifier.padding(it))
+                        is ProductUiState.Error -> Greeting(name = "Something went wrong", modifier = Modifier.padding(it))
+                    }
                 }
             }
         }
-        // By initializing the component at the application. We made the singleton
-        // scope at the application level.
-        val appComponent = (application as MyApplication).appComponent
-        val userRegistrationComponent =
-            appComponent.getUserRegistrationComponentBuilder().retryCount(3).build()
-        // It is preferred to factory pattern instead of the builder pattern because
-        // you might forget to call retryCount() at the compiler and it will not give
-        // error but at the runtime it will crash.
-        // In factory pattern, at the compile time it will give error if you don't pass
-        // retryCount value.
 
-        userRegistrationComponent.inject(this)
-        userRegistrationService.registerUser("abhi@gmail.com", "user registered")
     }
 }
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
-        modifier = modifier
+        text = name,
+        modifier = modifier.verticalScroll(rememberScrollState())
     )
 }
 

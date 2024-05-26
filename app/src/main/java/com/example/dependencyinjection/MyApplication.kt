@@ -1,13 +1,13 @@
 package com.example.dependencyinjection
 
 import android.app.Application
-import com.example.dependencyinjection.dependencyinjection.AppComponent
-import com.example.dependencyinjection.dependencyinjection.DaggerAppComponent
+import com.example.dependencyinjection.di.ApplicationComponent
+import com.example.dependencyinjection.di.DaggerApplicationComponent
 
 class MyApplication: Application() {
-    lateinit var appComponent: AppComponent
+    lateinit var applicationComponent: ApplicationComponent
     override fun onCreate() {
         super.onCreate()
-        appComponent = DaggerAppComponent.builder().build()
+        applicationComponent = DaggerApplicationComponent.builder().build()
     }
 }
