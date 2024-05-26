@@ -19,6 +19,8 @@ interface AppComponent {
 //    Since, Factory is used to make the objects of the UserRegistrationComponent. So, we have to expose the
 //    factory of the UserRegistrationComponent to the AppComponent, otherwise we could have used this given
 //    approach: - fun getUserRegistrationComponent(): UserRegistrationComponent
-    fun getUserRegistrationComponentFactory(): UserRegistrationComponent.Factory
+//    fun getUserRegistrationComponentFactory(): UserRegistrationComponent.Factory
+
+    fun getUserRegistrationComponentBuilder(): UserRegistrationComponent.Builder
 
 }

@@ -18,7 +18,7 @@ import javax.inject.Inject
 const val TAG = "DependencyInjection"
 
 class MainActivity : ComponentActivity() {
-//    Inject annotation tells Dagger to inject the UserRegistrationService object in the field
+    //    Inject annotation tells Dagger to inject the UserRegistrationService object in the field
     @Inject
     lateinit var userRegistrationService: UserRegistrationService
 
@@ -38,7 +38,14 @@ class MainActivity : ComponentActivity() {
         // By initializing the component at the application. We made the singleton
         // scope at the application level.
         val appComponent = (application as MyApplication).appComponent
-        val userRegistrationComponent = appComponent.getUserRegistrationComponentFactory().create(3)
+        val userRegistrationComponent =
+            appComponent.getUserRegistrationComponentBuilder().retryCount(3).build()
+        // It is preferred to factory pattern instead of the builder pattern because
+        // you might forget to call retryCount() at the compiler and it will not give
+        // error but at the runtime it will crash.
+        // In factory pattern, at the compile time it will give error if you don't pass
+        // retryCount value.
+
         userRegistrationComponent.inject(this)
         userRegistrationService.registerUser("abhi@gmail.com", "user registered")
     }

@@ -22,9 +22,20 @@ import javax.inject.Singleton
 interface UserRegistrationComponent {
     fun inject(mainActivity: MainActivity)
 
-    @Subcomponent.Factory
-    interface Factory{
-        // here, name of the create function could be anything but it is standard to have name create.
-        fun create(@BindsInstance retryCount: Int): UserRegistrationComponent
+//    @Subcomponent.Factory
+//    interface Factory{
+//        // here, name of the create function could be anything but it is standard to have name create.
+//        fun create(@BindsInstance retryCount: Int): UserRegistrationComponent
+//    }
+
+//    Alternative of the factory is the builder
+    @Subcomponent.Builder
+    interface Builder{
+        // In Builder, interface it is necessary to have build() function which will
+        // return UserRegistrationComponent.
+        fun build(): UserRegistrationComponent
+
+        //All other function will return should return Builder.
+        fun retryCount(@BindsInstance retryCount: Int): Builder
     }
 }
