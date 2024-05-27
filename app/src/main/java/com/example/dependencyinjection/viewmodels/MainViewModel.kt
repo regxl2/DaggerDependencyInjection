@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.dependencyinjection.db.FakeDB
 import com.example.dependencyinjection.models.Product
 import com.example.dependencyinjection.repository.ProductRepository
 import kotlinx.coroutines.delay
