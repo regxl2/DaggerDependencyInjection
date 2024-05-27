@@ -11,7 +11,6 @@ class ProductRepository @Inject constructor(private val fakeAPI: FakeAPI, privat
         val response = fakeAPI.getProducts()
         if(response.isSuccessful){
             response.body()?.let {
-                fakeDB.getFakeDAO().deleteAll()
                 fakeDB.getFakeDAO().addProducts(it)
             }
         }
